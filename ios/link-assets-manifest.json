@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Figtree-Black.ttf",
+      "sha1": "2336c6dd3185a86b37c298a18408fe91785028fb"
+    },
+    {
+      "path": "src/assets/fonts/Figtree-Bold.ttf",
+      "sha1": "82e096f1e69d1b880b3a0e7c28c03d54a56152c5"
+    },
+    {
+      "path": "src/assets/fonts/Figtree-ExtraBold.ttf",
+      "sha1": "d97c21729dc73543014923ccc5b9d5c4e02ebb09"
+    },
+    {
+      "path": "src/assets/fonts/Figtree-Light.ttf",
+      "sha1": "e650daefaa97970d8daa8654b9a35a8a43de093a"
+    },
+    {
+      "path": "src/assets/fonts/Figtree-Medium.ttf",
+      "sha1": "e3688e24751e01c1bed1fb655fae79316735de2d"
+    },
+    {
+      "path": "src/assets/fonts/Figtree-Regular.ttf",
+      "sha1": "b971ba6c123ca42604ae74840afd8e1ade6926ea"
+    },
+    {
+      "path": "src/assets/fonts/Figtree-SemiBold.ttf",
+      "sha1": "17f9c71ec7a0e79fe74b6e0f14b64f3b55dae9cb"
+    }
+  ]
+}
