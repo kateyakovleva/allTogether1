@@ -40,7 +40,7 @@ const AuthChoice = () => {
             onPress={() => navigation.navigate('Register')}
           >
             <LinearGradient
-              colors={['#6D0E6B', '#13427F']}
+              colors={['#13427F', '#6D0E6B']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.gradient}
