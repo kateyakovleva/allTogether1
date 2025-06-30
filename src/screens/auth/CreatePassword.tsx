@@ -26,7 +26,7 @@ const CreatePassword = () => {
   const handleSignUp = () => {
     if (password && confirmPassword && password === confirmPassword) {
       // Handle sign up logic
-      navigation.navigate('Home');
+      navigation.navigate('AuthChoice');
     }
   };
 
@@ -70,10 +70,12 @@ const CreatePassword = () => {
                 password.length > 0 && styles.inputActive,
               ]}
               placeholder="ENTER PASSWORD"
-              placeholderTextColor="#9E9E9E"
+              placeholderTextColor="#EEEEEE"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
+              textAlign="center"
+              textAlignVertical="center"
             />
             {password.length > 0 && (
               <TouchableOpacity
@@ -96,10 +98,12 @@ const CreatePassword = () => {
                 confirmPassword.length > 0 && styles.inputActive,
               ]}
               placeholder="REPIAT PASSWORD"
-              placeholderTextColor="#9E9E9E"
+              placeholderTextColor="#EEEEEE"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={!showConfirmPassword}
+              textAlign="center"
+              textAlignVertical="center"
             />
             {confirmPassword.length > 0 && (
               <TouchableOpacity
@@ -124,7 +128,7 @@ const CreatePassword = () => {
           >
             {password && confirmPassword ? (
               <LinearGradient
-                colors={['#13427F', '#6D0E6B']}
+                colors={['#596BCE', '#863192', '#D14684']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
@@ -195,23 +199,23 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
-    color: '#9E9E9E',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
+    color: '#EEEEEE',
     fontSize: 18,
     lineHeight: 18,
     letterSpacing: 0.9,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontFamily: 'Figtree-Light',
+    fontFamily: 'Lora-Regular',
     borderRadius: 100,
   },
   inputActive: {
-    borderColor: '#881878',
+    borderColor: '#C488B8',
     textAlign: 'center',
     textAlignVertical: 'center',
     color: '#FAFAFA',
-    fontFamily: 'Figtree-Regular',
+    fontFamily: 'Lora-Regular',
   },
   eyeButton: {
     position: 'absolute',
@@ -227,6 +231,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     resizeMode: 'contain',
+    tintColor: '#EEEEEE',
   },
   divider: {
     height: 1,
@@ -239,8 +244,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 60,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
@@ -261,7 +266,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 22,
     letterSpacing: 1.1,
-    color: '#9E9E9E',
+    color: '#EEEEEE',
     textTransform: 'uppercase',
   },
   buttonTextActive: {

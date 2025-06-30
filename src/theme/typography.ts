@@ -2,7 +2,7 @@ import { fonts } from './fonts';
 
 export const typography = {
   h1: {
-    fontFamily: fonts.light,
+    fontFamily: fonts.regular,
     fontSize: 32,
     lineHeight: 40,
   },

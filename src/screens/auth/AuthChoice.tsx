@@ -1,12 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/types';
 import AuthLayout from '../../components/layouts/AuthLayout';
-import { typography } from '../../theme/typography';
-import { fonts } from '../../theme/fonts';
-import { LightText, RegularText } from '../../components/ui/AppText';
+import { MediumText, RegularText } from '../../components/ui/AppText';
 import LinearGradient from 'react-native-linear-gradient';
 
 type AuthChoiceScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'AuthChoice'>;
@@ -25,13 +23,17 @@ const AuthChoice = () => {
             style={styles.logo}
           />
           
-          <LightText style={styles.welcomeText}>
+          <RegularText style={styles.welcomeText}>
             WELCOME TO
-          </LightText>
+          </RegularText>
           
-          <LightText style={styles.appName}>
-            ALLTOGETHER
-          </LightText>
+          <RegularText style={styles.appName}>
+            MALENA
+          </RegularText>
+
+          <MediumText style={styles.appRef}>
+            Smart Life Organizer
+          </MediumText>
         </View>
 
         <View style={styles.bottomContent}>
@@ -40,7 +42,7 @@ const AuthChoice = () => {
             onPress={() => navigation.navigate('Register')}
           >
             <LinearGradient
-              colors={['#13427F', '#6D0E6B']}
+              colors={['#596BCE', '#863192', '#D14684']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.gradient}
@@ -62,7 +64,7 @@ const AuthChoice = () => {
 
           <View style={styles.dividerContainer}>
             <View style={styles.divider} />
-            <LightText style={styles.orText}>OR</LightText>
+            <RegularText style={styles.orText}>OR</RegularText>
             <View style={styles.divider} />
           </View>
 
@@ -126,6 +128,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textTransform: 'uppercase',
   },
+  appRef: {
+    marginTop: 10,
+    fontSize: 30,
+    lineHeight: 40,
+    letterSpacing: 2.2,
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
   signUpButton: {
     width: width - 38,
     height: 60,
@@ -154,7 +164,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: 'rgba(250, 250, 250, 0.05)',
     borderWidth: 1,
-    borderColor: '#616161',
+    borderColor: '#BDBDBD',
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 12,
@@ -179,7 +189,7 @@ const styles = StyleSheet.create({
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#616161',
+    backgroundColor: '#E0E0E0',
   },
   orText: {
     marginHorizontal: 10,
@@ -201,7 +211,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: 'rgba(250, 250, 250, 0.05)',
     borderWidth: 1,
-    borderColor: '#616161',
+    borderColor: '#E0E0E0',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,

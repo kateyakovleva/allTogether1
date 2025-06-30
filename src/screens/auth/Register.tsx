@@ -56,19 +56,26 @@ const Register = () => {
         </View>
         <View style={styles.contentContainer}>
           <RegularText style={styles.title}>Sign up with Email</RegularText>
-          <TextInput
-            style={[
-              styles.input,
-              email.length > 0 && styles.inputActive,
-              !isEmailValid && styles.inputError,
-            ]}
-            placeholder="ENTER YOUR EMAIL"
-            placeholderTextColor="#9E9E9E"
-            value={email}
-            onChangeText={handleEmailChange}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+          <View style={styles.inputWrapper}>
+            {email.length === 0 && (
+              <RegularText style={styles.customPlaceholder}>
+                ENTER YOUR EMAIL
+              </RegularText>
+            )}
+            <TextInput
+              style={[
+                styles.input,
+                email.length > 0 && styles.inputActive,
+                !isEmailValid && styles.inputError,
+              ]}
+              value={email}
+              onChangeText={handleEmailChange}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              textAlign="center"
+              selectionColor="#EEEEEE"
+            />
+          </View>
           <View style={styles.divider} />
           <TouchableOpacity
             style={[styles.button, email.length > 0 && styles.buttonActive]}
@@ -77,7 +84,7 @@ const Register = () => {
           >
             {email.length > 0 ? (
               <LinearGradient
-                colors={['#13427F', '#6D0E6B']}
+                colors={['#596BCE', '#863192', '#D14684']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
@@ -138,30 +145,58 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
+  inputWrapper: {
+    width: '100%',
+    height: 60,
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  customPlaceholder: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#EEEEEE',
+    fontSize: 18,
+    letterSpacing: 0.9,
+    fontFamily: 'Lora-Regular',
+    opacity: 0.7,
+    zIndex: 1,
+    includeFontPadding: false,
+    pointerEvents: 'none',
+    textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 12,
+  },
   input: {
     width: '100%',
     height: 60,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
-    color: '#9E9E9E',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
+    color: '#EEEEEE',
     fontSize: 18,
     lineHeight: 18,
     letterSpacing: 0.9,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontFamily: 'Figtree-Light',
+    fontFamily: 'Lora-Regular',
     borderRadius: 100,
     marginBottom: 20,
   },
   inputActive: {
-    borderColor: '#881878',
+    borderColor: '#C488B8',
     textAlign: 'center',
     textAlignVertical: 'center',
     color: '#FAFAFA',
-    fontFamily: 'Figtree-Regular',
+    fontFamily: 'Lora-Regular',
   },
   inputError: {
     borderColor: '#FF3B30',
@@ -176,8 +211,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 60,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
@@ -198,7 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 22,
     letterSpacing: 1.1,
-    color: '#9E9E9E',
+    color: '#EEEEEE',
     textTransform: 'uppercase',
   },
   buttonTextActive: {

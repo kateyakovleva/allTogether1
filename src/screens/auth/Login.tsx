@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/types';
 import AuthLayout from '../../components/layouts/AuthLayout';
-import { LightText, RegularText } from '../../components/ui/AppText';
+import { RegularText } from '../../components/ui/AppText';
 import LinearGradient from 'react-native-linear-gradient';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
@@ -118,7 +118,7 @@ const Login = () => {
           >
             {isFormValid ? (
               <LinearGradient
-                colors={['#13427F', '#6D0E6B']}
+                colors={['#596BCE', '#863192', '#D14684']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
@@ -138,9 +138,9 @@ const Login = () => {
             style={styles.forgotPassword}
             onPress={() => navigation.navigate('ForgotPassword')}
           >
-            <LightText style={styles.forgotPasswordText}>
+            <RegularText style={styles.forgotPasswordText}>
               Forgot password?
-            </LightText>
+            </RegularText>
           </TouchableOpacity>
         </View>
       </View>

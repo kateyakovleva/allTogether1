@@ -17,7 +17,7 @@ const App = () => {
         fallback={
           <View style={styles.fallback}>
             <Text style={styles.fallbackText}>Loading...</Text>
-          </View>
+    </View>
         }
       >
         <RootNavigator />

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, Image, TextInput, Dimensions } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RouteProp } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigation/types';
-import LinearGradient from 'react-native-linear-gradient';
-import { RegularText, LightText } from '../../components/ui/AppText';
 import AuthLayout from '../../components/layouts/AuthLayout';
+import { RegularText } from '../../components/ui/AppText';
+import LinearGradient from 'react-native-linear-gradient';
 
 type EmailVerificationScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'EmailVerification'>;
 type EmailVerificationScreenRouteProp = RouteProp<AuthStackParamList, 'EmailVerification'>;
@@ -51,31 +51,41 @@ const EmailVerification = () => {
             Enter the 6-digit code sent to your email
           </RegularText>
           
-          <LightText style={styles.description}>
+          <RegularText style={styles.description}>
             We've sent a verification code to your Email. Please enter it below to continue.
-          </LightText>
+          </RegularText>
 
-          <TextInput
-            style={[
-              styles.input,
-              code.length > 0 && styles.inputActive,
-            ]}
-            placeholder="_ _ _ _ _ _"
-            placeholderTextColor="#9E9E9E"
-            value={code}
-            onChangeText={setCode}
-            maxLength={6}
-            keyboardType="number-pad"
-          />
+          <View style={styles.inputWrapper}>
+            {code.length === 0 && (
+              <RegularText style={styles.customPlaceholder}>
+                _  _  _  _  _  _
+              </RegularText>
+            )}
+            <TextInput
+              style={[
+                styles.input,
+                code.length > 0 && styles.inputActive,
+              ]}
+              value={code}
+              onChangeText={(text) => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                setCode(numericText);
+              }}
+              maxLength={6}
+              keyboardType="number-pad"
+              textAlign="center"
+              textAlignVertical="center"
+            />
+          </View>
 
-          <LightText style={styles.resendText}>
+          <RegularText style={styles.resendText}>
             Didn't receive the code?
-          </LightText>
+          </RegularText>
 
           <View style={styles.timerContainer}>
-            <LightText style={styles.timerText}>
+            <RegularText style={styles.timerText}>
               You can resend it in <RegularText style={styles.timerValue}>00:45</RegularText>
-            </LightText>
+            </RegularText>
           </View>
 
           <View style={styles.divider} />
@@ -87,7 +97,7 @@ const EmailVerification = () => {
           >
             {code.length === 6 ? (
               <LinearGradient
-                colors={['#13427F', '#6D0E6B']}
+                colors={['#596BCE', '#863192', '#D14684']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 80,
     paddingRight: 19,
-    paddingBottom: 30,
+    paddingBottom: 50,
     paddingLeft: 20,
   },
   logoContainer: {
@@ -150,14 +160,42 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   description: {
-    fontFamily: 'Figtree',
+    fontFamily: 'Lora-Regular',
     fontSize: 16,
     lineHeight: 16,
     letterSpacing: 0.8,
-    color: '#757575',
+    color: '#BDBDBD',
     textAlign: 'center',
     marginBottom: 20,
     paddingHorizontal: 55,
+  },
+  inputWrapper: {
+    width: '100%',
+    height: 60,
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  customPlaceholder: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#EEEEEE',
+    fontSize: 28,
+    letterSpacing: 0.9,
+    fontFamily: 'Lora-Regular',
+    opacity: 0.7,
+    zIndex: 1,
+    includeFontPadding: false,
+    pointerEvents: 'none',
+    textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 12,
   },
   input: {
     width: '100%',
@@ -165,27 +203,26 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
-    color: '#9E9E9E',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
+    color: '#EEEEEE',
     fontSize: 28,
     lineHeight: 18,
     letterSpacing: 0.9,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontFamily: 'Figtree-Light',
+    fontFamily: 'Lora-Regular',
     borderRadius: 100,
-    marginBottom: 20,
   },
   inputActive: {
-    borderColor: '#881878',
+    borderColor: '#C488B8',
     textAlign: 'center',
     textAlignVertical: 'center',
     color: '#FAFAFA',
-    fontFamily: 'Figtree-Regular',
+    fontFamily: 'Lora-Regular',
   },
   resendText: {
-    fontFamily: 'Figtree',
+    fontFamily: 'Lora-Regular',
     fontSize: 16,
     lineHeight: 16,
     letterSpacing: 0.8,
@@ -198,12 +235,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   timerText: {
-    fontFamily: 'Figtree',
+    fontFamily: 'Lora-Regular',
     fontSize: 16,
     lineHeight: 16,
     letterSpacing: 0.8,
     textAlign: 'center',
-    color: '#757575',
+    color: '#BDBDBD',
   },
   timerValue: {
     color: '#EEEEEE',
@@ -219,8 +256,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 60,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
@@ -241,7 +278,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 22,
     letterSpacing: 1.1,
-    color: '#9E9E9E',
+    color: '#EEEEEE',
     textTransform: 'uppercase',
   },
   buttonTextActive: {
