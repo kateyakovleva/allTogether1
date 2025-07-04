@@ -1,37 +1,30 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useRef } from 'react';
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, TextInput as RNTextInput } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigation/types';
-import LinearGradient from 'react-native-linear-gradient';
-import { RegularText } from '../../components/ui/AppText';
 import AuthLayout from '../../components/layouts/AuthLayout';
+import { RegularText } from '../../components/ui/AppText';
+import LinearGradient from 'react-native-linear-gradient';
 
-type RegisterScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Register'>;
+type ResetEmailVerificationScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'ResetEmailVerification'>;
+type ResetEmailVerificationScreenRouteProp = RouteProp<AuthStackParamList, 'ResetEmailVerification'>;
 
-const Register = () => {
-  const [email, setEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const navigation = useNavigation<RegisterScreenNavigationProp>();
-
-  const validateEmail = (text: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(text);
-  };
-
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-    setIsEmailValid(validateEmail(text));
-  };
-
-  const handleContinue = () => {
-    if (validateEmail(email)) {
-      navigation.navigate('EmailVerification', { email });
-    }
-  };
+const ResetEmailVerification = () => {
+  const navigation = useNavigation<ResetEmailVerificationScreenNavigationProp>();
+  const route = useRoute<ResetEmailVerificationScreenRouteProp>();
+  const [code, setCode] = useState('');
+  const inputRef = useRef<RNTextInput>(null);
 
   const handleBackPress = () => {
     navigation.goBack();
+  };
+
+  const handleContinue = () => {
+    if (code.length === 6) {
+      navigation.navigate('ResetCreatePassword', { email: route.params.email });
+    }
   };
 
   return (
@@ -55,34 +48,56 @@ const Register = () => {
           />
         </View>
         <View style={styles.contentContainer}>
-          <RegularText style={styles.title}>Sign up with Email</RegularText>
+          <RegularText style={styles.title}>
+            Enter the 6-digit code sent to your email
+          </RegularText>
+          
+          <RegularText style={styles.description}>
+            We've sent a verification code to your Email. Please enter it below to continue.
+          </RegularText>
+
           <View style={styles.inputWrapper}>
-            {email.length === 0 && (
+            {code.length === 0 && (
               <RegularText style={styles.customPlaceholder}>
-                ENTER YOUR EMAIL
+                _  _  _  _  _  _
               </RegularText>
             )}
             <TextInput
+              ref={inputRef}
               style={[
                 styles.input,
-                email.length > 0 && styles.inputActive,
-                !isEmailValid && styles.inputError,
+                code.length > 0 && styles.inputActive,
               ]}
-              value={email}
-              onChangeText={handleEmailChange}
-              keyboardType="email-address"
-              autoCapitalize="none"
+              value={code}
+              onChangeText={(text) => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                setCode(numericText);
+              }}
+              maxLength={6}
+              keyboardType="number-pad"
               textAlign="center"
-              selectionColor="#EEEEEE"
+              textAlignVertical="center"
             />
           </View>
+
+          <RegularText style={styles.resendText}>
+            Didn't receive the code?
+          </RegularText>
+
+          <View style={styles.timerContainer}>
+            <RegularText style={styles.timerText}>
+              You can resend it in <RegularText style={styles.timerValue}>00:45</RegularText>
+            </RegularText>
+          </View>
+
           <View style={styles.divider} />
+
           <TouchableOpacity
-            style={[styles.button, email.length > 0 && styles.buttonActive]}
+            style={[styles.button, code.length === 6 && styles.buttonActive]}
             onPress={handleContinue}
-            disabled={!validateEmail(email)}
+            disabled={code.length !== 6}
           >
-            {email.length > 0 ? (
+            {code.length === 6 ? (
               <LinearGradient
                 colors={['#596BCE', '#863192', '#D14684']}
                 start={{ x: 0, y: 0 }}
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 100,
+    paddingTop: 80,
     paddingRight: 19,
     paddingBottom: 50,
     paddingLeft: 20,
@@ -143,12 +158,23 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
     color: '#FAFAFA',
     textAlign: 'center',
+    marginBottom: 10,
+    paddingHorizontal: 40,
+  },
+  description: {
+    fontFamily: 'Lora-Regular',
+    fontSize: 16,
+    lineHeight: 16,
+    letterSpacing: 0.8,
+    color: '#757575',
+    textAlign: 'center',
     marginBottom: 20,
+    paddingHorizontal: 55,
   },
   inputWrapper: {
     width: '100%',
     height: 60,
-    marginBottom: 10,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -162,7 +188,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     color: '#EEEEEE',
-    fontSize: 18,
+    fontSize: 28,
     letterSpacing: 0.9,
     fontFamily: 'Lora-Regular',
     opacity: 0.7,
@@ -182,14 +208,13 @@ const styles = StyleSheet.create({
     borderColor: '#BDBDBD',
     backgroundColor: 'rgba(250, 250, 250, 0.05)',
     color: '#EEEEEE',
-    fontSize: 18,
+    fontSize: 28,
     lineHeight: 18,
     letterSpacing: 0.9,
     textAlign: 'center',
     textAlignVertical: 'center',
     fontFamily: 'Lora-Regular',
     borderRadius: 100,
-    marginBottom: 20,
   },
   inputActive: {
     borderColor: '#C488B8',
@@ -198,8 +223,30 @@ const styles = StyleSheet.create({
     color: '#FAFAFA',
     fontFamily: 'Lora-Regular',
   },
-  inputError: {
-    borderColor: '#FF3B30',
+  resendText: {
+    fontFamily: 'Lora-Regular',
+    fontSize: 16,
+    lineHeight: 16,
+    letterSpacing: 0.8,
+    textAlign: 'center',
+    color: '#FAFAFA',
+    marginBottom: 5,
+  },
+  timerContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  timerText: {
+    fontFamily: 'Lora-Regular',
+    fontSize: 16,
+    lineHeight: 16,
+    letterSpacing: 0.8,
+    textAlign: 'center',
+    color: '#757575',
+  },
+  timerValue: {
+    color: '#EEEEEE',
+    fontWeight: '400',
   },
   divider: {
     height: 1,
@@ -245,4 +292,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register; 
+export default ResetEmailVerification; 

@@ -1,38 +1,35 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigation/types';
-import LinearGradient from 'react-native-linear-gradient';
-import { RegularText } from '../../components/ui/AppText';
 import AuthLayout from '../../components/layouts/AuthLayout';
+import { RegularText } from '../../components/ui/AppText';
+import LinearGradient from 'react-native-linear-gradient';
 
-type RegisterScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Register'>;
+type ResetConfirmPasswordScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'ResetConfirmPassword'>;
+type ResetConfirmPasswordScreenRouteProp = RouteProp<AuthStackParamList, 'ResetConfirmPassword'>;
 
-const Register = () => {
-  const [email, setEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const navigation = useNavigation<RegisterScreenNavigationProp>();
-
-  const validateEmail = (text: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(text);
-  };
-
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-    setIsEmailValid(validateEmail(text));
-  };
-
-  const handleContinue = () => {
-    if (validateEmail(email)) {
-      navigation.navigate('EmailVerification', { email });
-    }
-  };
+const ResetConfirmPassword = () => {
+  const navigation = useNavigation<ResetConfirmPasswordScreenNavigationProp>();
+  const route = useRoute<ResetConfirmPasswordScreenRouteProp>();
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleBackPress = () => {
     navigation.goBack();
   };
+
+  const handleSignUp = () => {
+    if (password.length >= 8 && password === confirmPassword) {
+      navigation.navigate('AuthChoice');
+    }
+  };
+
+  const isFormValid = password.length >= 8 && password === confirmPassword;
 
   return (
     <AuthLayout>
@@ -55,44 +52,86 @@ const Register = () => {
           />
         </View>
         <View style={styles.contentContainer}>
-          <RegularText style={styles.title}>Sign up with Email</RegularText>
+          <RegularText style={styles.title}>Create a new password</RegularText>
+          
+          <RegularText style={styles.description}>
+            Your password must be at least 8 characters long and contain a mix of letters, numbers, and symbols.
+          </RegularText>
+
           <View style={styles.inputWrapper}>
-            {email.length === 0 && (
+            {password.length === 0 && (
               <RegularText style={styles.customPlaceholder}>
-                ENTER YOUR EMAIL
+                PASSWORD
               </RegularText>
             )}
             <TextInput
               style={[
                 styles.input,
-                email.length > 0 && styles.inputActive,
-                !isEmailValid && styles.inputError,
+                password.length > 0 && styles.inputActive,
               ]}
-              value={email}
-              onChangeText={handleEmailChange}
-              keyboardType="email-address"
-              autoCapitalize="none"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
               textAlign="center"
-              selectionColor="#EEEEEE"
+              textAlignVertical="center"
             />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Image
+                source={showPassword ? require('../../assets/images/eyehide.png') : require('../../assets/images/eye.png')}
+                style={styles.eyeImage}
+              />
+            </TouchableOpacity>
           </View>
+
+          <View style={styles.inputWrapper}>
+            {confirmPassword.length === 0 && (
+              <RegularText style={styles.customPlaceholder}>
+                CONFIRM PASSWORD
+              </RegularText>
+            )}
+            <TextInput
+              style={[
+                styles.input,
+                confirmPassword.length > 0 && styles.inputActive,
+              ]}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={!showConfirmPassword}
+              textAlign="center"
+              textAlignVertical="center"
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              <Image
+                source={showConfirmPassword ? require('../../assets/images/eyehide.png') : require('../../assets/images/eye.png')}
+                style={styles.eyeImage}
+              />
+            </TouchableOpacity>
+          </View>
+
           <View style={styles.divider} />
+
           <TouchableOpacity
-            style={[styles.button, email.length > 0 && styles.buttonActive]}
-            onPress={handleContinue}
-            disabled={!validateEmail(email)}
+            style={[styles.button, isFormValid && styles.buttonActive]}
+            onPress={handleSignUp}
+            disabled={!isFormValid}
           >
-            {email.length > 0 ? (
+            {isFormValid ? (
               <LinearGradient
                 colors={['#596BCE', '#863192', '#D14684']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
               >
-                <RegularText style={styles.buttonTextActive}>CONTINUE</RegularText>
+                <RegularText style={styles.buttonTextActive}>SIGN UP</RegularText>
               </LinearGradient>
             ) : (
-              <RegularText style={styles.buttonText}>CONTINUE</RegularText>
+              <RegularText style={styles.buttonText}>SIGN UP</RegularText>
             )}
           </TouchableOpacity>
         </View>
@@ -145,10 +184,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
+  description: {
+    fontFamily: 'Lora-Regular',
+    fontSize: 16,
+    lineHeight: 16,
+    letterSpacing: 0.8,
+    color: '#757575',
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 55,
+  },
   inputWrapper: {
     width: '100%',
     height: 60,
-    marginBottom: 10,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -170,7 +219,7 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     pointerEvents: 'none',
     textAlign: 'center',
-    paddingTop: 10,
+    paddingTop: 18,
     paddingBottom: 12,
   },
   input: {
@@ -189,7 +238,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontFamily: 'Lora-Regular',
     borderRadius: 100,
-    marginBottom: 20,
   },
   inputActive: {
     borderColor: '#C488B8',
@@ -198,8 +246,19 @@ const styles = StyleSheet.create({
     color: '#FAFAFA',
     fontFamily: 'Lora-Regular',
   },
-  inputError: {
-    borderColor: '#FF3B30',
+  eyeIcon: {
+    position: 'absolute',
+    right: 20,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+  },
+  eyeImage: {
+    width: 24,
+    height: 24,
+    tintColor: '#EEEEEE',
   },
   divider: {
     height: 1,
@@ -245,4 +304,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register; 
+export default ResetConfirmPassword; 

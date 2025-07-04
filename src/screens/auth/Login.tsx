@@ -65,34 +65,48 @@ const Login = () => {
         </View>
         
         <View style={styles.contentContainer}>
-          <TextInput
-            style={[
-              styles.input,
-              emailError && styles.inputError,
-              email && styles.inputActive
-            ]}
-            placeholder="EMAIL"
-            placeholderTextColor="#9E9E9E"
-            value={email}
-            onChangeText={handleEmailChange}
-            autoCapitalize="none"
-            keyboardType="email-address"
-          />
-
-          <View style={styles.passwordContainer}>
+          <View style={styles.inputWrapper}>
+            {email.length === 0 && (
+              <RegularText style={styles.customPlaceholder}>
+                EMAIL
+              </RegularText>
+            )}
             <TextInput
               style={[
                 styles.input,
-                passwordError && styles.inputError,
-                password && styles.inputActive
+                emailError && styles.inputError,
+                email && styles.inputActive
               ]}
-              placeholder="PASSWORD"
-              placeholderTextColor="#9E9E9E"
-              value={password}
-              onChangeText={handlePasswordChange}
-              secureTextEntry={!showPassword}
+              value={email}
+              onChangeText={handleEmailChange}
               autoCapitalize="none"
+              keyboardType="email-address"
+              textAlign="center"
+              textAlignVertical="center"
             />
+          </View>
+
+          <View style={styles.passwordContainer}>
+            <View style={styles.inputWrapper}>
+              {password.length === 0 && (
+                <RegularText style={styles.customPlaceholder}>
+                  PASSWORD
+                </RegularText>
+              )}
+              <TextInput
+                style={[
+                  styles.input,
+                  passwordError && styles.inputError,
+                  password && styles.inputActive
+                ]}
+                value={password}
+                onChangeText={handlePasswordChange}
+                secureTextEntry={!showPassword}
+                autoCapitalize="none"
+                textAlign="center"
+                textAlignVertical="center"
+              />
+            </View>
             {password && (
               <TouchableOpacity 
                 style={styles.eyeButton}
@@ -190,23 +204,23 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
-    color: '#9E9E9E',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
+    color: '#EEEEEE',
     fontSize: 18,
     lineHeight: 18,
     letterSpacing: 0.9,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontFamily: 'Figtree-Light',
+    fontFamily: 'Lora-Regular',
     borderRadius: 100,
   },
   inputActive: {
-    borderColor: '#881878',
+    borderColor: '#C488B8',
     textAlign: 'center',
     textAlignVertical: 'center',
     color: '#FAFAFA',
-    fontFamily: 'Figtree-Regular',
+    fontFamily: 'Lora-Regular',
   },
   inputError: {
     borderColor: '#FF3B30',
@@ -241,8 +255,8 @@ const styles = StyleSheet.create({
     height: 60,
     marginTop: 20,
     borderWidth: 1,
-    borderColor: '#616161',
-    backgroundColor: '#FAFAFA0D',
+    borderColor: '#BDBDBD',
+    backgroundColor: 'rgba(250, 250, 250, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
@@ -263,7 +277,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 22,
     letterSpacing: 1.1,
-    color: '#9E9E9E',
+    color: '#EEEEEE',
     textTransform: 'uppercase',
   },
   buttonTextActive: {
@@ -284,6 +298,33 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
     color: '#FAFAFA',
     textAlign: 'center',
+  },
+  inputWrapper: {
+    width: '100%',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  customPlaceholder: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#EEEEEE',
+    fontSize: 18,
+    letterSpacing: 0.9,
+    fontFamily: 'Lora-Regular',
+    opacity: 0.7,
+    zIndex: 1,
+    includeFontPadding: false,
+    pointerEvents: 'none',
+    textAlign: 'center',
+    paddingTop: 18,
+    paddingBottom: 12,
   },
 });
 

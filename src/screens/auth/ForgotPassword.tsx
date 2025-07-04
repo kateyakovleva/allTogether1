@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/types';
@@ -25,7 +25,7 @@ const ForgotPassword = () => {
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('EmailVerification')}
+        onPress={() => navigation.navigate('ResetPassword')}
       >
         <Text style={styles.buttonText}>Отправить</Text>
       </TouchableOpacity>

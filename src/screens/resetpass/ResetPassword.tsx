@@ -7,16 +7,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import { RegularText } from '../../components/ui/AppText';
 import AuthLayout from '../../components/layouts/AuthLayout';
 
-type RegisterScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Register'>;
+type ResetPasswordScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'ResetPassword'>;
 
-const Register = () => {
+const ResetPassword = () => {
   const [email, setEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
-  const navigation = useNavigation<RegisterScreenNavigationProp>();
+  const navigation = useNavigation<ResetPasswordScreenNavigationProp>();
 
   const validateEmail = (text: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(text);
+    return text.includes('@') && text.includes('.') && text.length > 3;
   };
 
   const handleEmailChange = (text: string) => {
@@ -26,7 +25,7 @@ const Register = () => {
 
   const handleContinue = () => {
     if (validateEmail(email)) {
-      navigation.navigate('EmailVerification', { email });
+      navigation.navigate('ResetEmailVerification', { email });
     }
   };
 
@@ -55,11 +54,16 @@ const Register = () => {
           />
         </View>
         <View style={styles.contentContainer}>
-          <RegularText style={styles.title}>Sign up with Email</RegularText>
+          <RegularText style={styles.title}>Reset your password</RegularText>
+          
+          <RegularText style={styles.description}>
+            Enter the email address linked to your account, and we'll send you a code to reset your password.
+          </RegularText>
+
           <View style={styles.inputWrapper}>
             {email.length === 0 && (
               <RegularText style={styles.customPlaceholder}>
-                ENTER YOUR EMAIL
+                EMAIL
               </RegularText>
             )}
             <TextInput
@@ -73,10 +77,12 @@ const Register = () => {
               keyboardType="email-address"
               autoCapitalize="none"
               textAlign="center"
-              selectionColor="#EEEEEE"
+              textAlignVertical="center"
             />
           </View>
+
           <View style={styles.divider} />
+
           <TouchableOpacity
             style={[styles.button, email.length > 0 && styles.buttonActive]}
             onPress={handleContinue}
@@ -145,10 +151,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
+  description: {
+    fontFamily: 'Lora-Regular',
+    fontSize: 16,
+    lineHeight: 16,
+    letterSpacing: 0.8,
+    color: '#757575',
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 55,
+  },
   inputWrapper: {
     width: '100%',
     height: 60,
-    marginBottom: 10,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -170,7 +186,7 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     pointerEvents: 'none',
     textAlign: 'center',
-    paddingTop: 10,
+    paddingTop: 18,
     paddingBottom: 12,
   },
   input: {
@@ -189,7 +205,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontFamily: 'Lora-Regular',
     borderRadius: 100,
-    marginBottom: 20,
   },
   inputActive: {
     borderColor: '#C488B8',
@@ -245,4 +260,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register; 
+export default ResetPassword; 
