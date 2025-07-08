@@ -6,6 +6,7 @@ import { AuthStackParamList } from '../../navigation/types';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { RegularText } from '../../components/ui/AppText';
 import LinearGradient from 'react-native-linear-gradient';
+import { useAuth } from '../../context/AuthContext';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -18,7 +19,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-
+  const { login } = useAuth();
   const validateEmail = (text: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(text);
@@ -42,6 +43,12 @@ const Login = () => {
 
   const handleBackPress = () => {
     navigation.goBack();
+  };
+
+  const handleLogin = () => {
+    if (isFormValid) {
+      login();
+    }
   };
 
   return (
@@ -128,7 +135,7 @@ const Login = () => {
           <TouchableOpacity
             style={[styles.button, isFormValid && styles.buttonActive]}
             disabled={!isFormValid}
-            onPress={() => {/* Handle login */}}
+            onPress={handleLogin}
           >
             {isFormValid ? (
               <LinearGradient
@@ -150,7 +157,7 @@ const Login = () => {
 
           <TouchableOpacity 
             style={styles.forgotPassword}
-            onPress={() => navigation.navigate('ForgotPassword')}
+            onPress={() => navigation.navigate('ResetPassword')}
           >
             <RegularText style={styles.forgotPasswordText}>
               Forgot password?

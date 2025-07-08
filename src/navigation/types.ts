@@ -9,7 +9,6 @@ export type AuthStackParamList = {
   Register: undefined;
   EmailVerification: { email: string; isReset?: boolean };
   CreatePassword: { email: string };
-  ForgotPassword: undefined;
   ResetPassword: undefined;
   ResetEmailVerification: { email: string };
   ResetCreatePassword: { email: string };

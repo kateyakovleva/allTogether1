@@ -4,12 +4,12 @@ import { RootStackParamList } from './types';
 
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
+import { useAuth } from '../context/AuthContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  // TODO: Add authentication state check
-  const isAuthenticated = false;
+  const { isAuthenticated } = useAuth();
 
   return (
     <Stack.Navigator

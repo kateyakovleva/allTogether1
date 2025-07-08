@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   title: {
+    fontFamily: 'Lora-Regular',
     fontSize: 26,
     lineHeight: 26,
     letterSpacing: 1.3,
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16,
     letterSpacing: 0.8,
-    color: '#757575',
+    color: '#BDBDBD',
     textAlign: 'center',
     marginBottom: 20,
     paddingHorizontal: 55,

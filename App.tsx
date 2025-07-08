@@ -9,11 +9,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, Text, StyleSheet } from 'react-native';
 import RootNavigator from './src/navigation/RootNavigator';
-
+import { AuthProvider } from './src/context/AuthContext';
 const App = () => {
   return (
     <SafeAreaProvider>
-      <NavigationContainer
+      <AuthProvider>
+        <NavigationContainer
         fallback={
           <View style={styles.fallback}>
             <Text style={styles.fallbackText}>Loading...</Text>
@@ -22,6 +23,7 @@ const App = () => {
       >
         <RootNavigator />
       </NavigationContainer>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 };

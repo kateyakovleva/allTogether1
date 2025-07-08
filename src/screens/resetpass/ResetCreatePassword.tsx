@@ -25,7 +25,7 @@ const ResetCreatePassword = () => {
 
   const handleSignUp = () => {
     if (password.length >= 8 && password === confirmPassword) {
-      navigation.navigate('ResetConfirmPassword', { email: route.params.email });
+      navigation.navigate('Login');
     }
   };
 
@@ -52,7 +52,7 @@ const ResetCreatePassword = () => {
           />
         </View>
         <View style={styles.contentContainer}>
-          <RegularText style={styles.title}>Create a secure password</RegularText>
+          <RegularText style={styles.title}>Create a new password</RegularText>
           
           <RegularText style={styles.description}>
             Your password must be at least 8 characters long and contain a mix of letters, numbers, and symbols.
@@ -80,7 +80,7 @@ const ResetCreatePassword = () => {
               onPress={() => setShowPassword(!showPassword)}
             >
               <Image
-                source={showPassword ? require('../../assets/images/eyehide.png') : require('../../assets/images/eye.png')}
+                source={showPassword ? require('../../assets/images/eye.png') : require('../../assets/images/eyehide.png')}
                 style={styles.eyeImage}
               />
             </TouchableOpacity>
@@ -108,7 +108,7 @@ const ResetCreatePassword = () => {
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
             >
               <Image
-                source={showConfirmPassword ? require('../../assets/images/eyehide.png') : require('../../assets/images/eye.png')}
+                source={showConfirmPassword ? require('../../assets/images/eye.png') : require('../../assets/images/eyehide.png')}
                 style={styles.eyeImage}
               />
             </TouchableOpacity>
@@ -128,10 +128,10 @@ const ResetCreatePassword = () => {
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
               >
-                <RegularText style={styles.buttonTextActive}>SIGN UP</RegularText>
+                <RegularText style={styles.buttonTextActive}>RESET PASSWORD</RegularText>
               </LinearGradient>
             ) : (
-              <RegularText style={styles.buttonText}>SIGN UP</RegularText>
+              <RegularText style={styles.buttonText}>RESET PASSWORD</RegularText>
             )}
           </TouchableOpacity>
         </View>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16,
     letterSpacing: 0.8,
-    color: '#757575',
+    color: '#BDBDBD',
     textAlign: 'center',
     marginBottom: 20,
     paddingHorizontal: 55,
