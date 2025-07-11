@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import AppText from '../../components/ui/AppText';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -31,6 +31,9 @@ const CategoryDetails = () => {
 
   return (
     <View style={styles.container}>
+      {category.image && (
+        <Image source={category.image} style={{ width: 100, height: 100, alignSelf: 'center', marginTop: 20, marginBottom: 10 }} />
+      )}
       <AppText style={styles.title} weight="bold">{category.name}</AppText>
       <FlatList
         data={events}

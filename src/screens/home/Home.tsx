@@ -1,7 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text, StyleSheet, Image, ScrollView, Dimensions, Pressable, ImageBackground, StatusBar, View, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { HomeStackParamList } from '../../navigation/types';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const categories = [
   {
@@ -34,35 +38,99 @@ const categories = [
   },
 ];
 
+const categoryImages = [
+  require('../../assets/images/main/mandala1.png'),
+  require('../../assets/images/main/mandala2.png'),
+  require('../../assets/images/main/mandala3.png'),
+  require('../../assets/images/main/mandala4.png'),
+  require('../../assets/images/main/mandala5.png'),
+  require('../../assets/images/main/mandala6.png'),
+  require('../../assets/images/main/mandala7.png'),
+];
+
 const Home = () => {
+  // Получение текущей даты
+  const now = new Date();
+  const month = now.toLocaleString('en-US', { month: 'long' });
+  const day = now.getDate();
+  const weekday = now.toLocaleString('en-US', { weekday: 'short' });
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'HomeScreen'>>();
+
+  const handleCategoryPress = (cat: { label: string; image: any }) => {
+    navigation.navigate('CategoryDetails', { category: { name: cat.label, image: cat.image } });
+  };
+
+  const handleGoToCategory = () => {
+    navigation.navigate('CategoryDetails', { category: { name: 'Тестовая категория', image: null } });
+  };
+
   return (
-    <ImageBackground source={require('../../assets/images/main/background.png')} style={styles.background}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+    <ImageBackground
+      source={require('../../assets/images/main/background.png')}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <StatusBar barStyle="light-content" backgroundColor="transparent" />
+      {/* Первый контейнер: 25% высоты, фон stars.png */}
+      <ImageBackground
+        source={require('../../assets/images/main/stars.png')}
+        style={styles.topContainer}
+        resizeMode="cover"
+      >
+        {/* blure поверх stars */}
+        <Image
+          source={require('../../assets/images/main/blure.png')}
+          style={styles.blure}
+          resizeMode="cover"
+        />
+        {/* flower поверх blure */}
+        <Image
+          source={require('../../assets/images/main/flower.png')}
+          style={styles.flower}
+          resizeMode="contain"
+        />
+        {/* Контент поверх всех слоёв */}
         <View style={styles.header}>
-          <Image source={require('../../assets/images/mandala.png')} style={styles.mandala} />
-          <Text style={styles.month}>May</Text>
-          <Text style={styles.day}>25</Text>
-          <Text style={styles.weekday}>Sun</Text>
+          <Text style={styles.month}>{month}</Text>
+          <Text style={styles.day}>{day}</Text>
+          <Text style={styles.weekday}>{weekday}</Text>
         </View>
-        <View style={styles.categoriesBlock}>
-          {categories.map((cat, idx) => (
-            <View key={cat.label} style={styles.categoryRow}>
-              <Image source={cat.image} style={styles.categoryIcon} />
-              <Text style={styles.categoryLabel}>{cat.label}</Text>
-            </View>
-          ))}
+        {/* Градиентный элемент поверх всех, прижат к низу */}
+        <LinearGradient
+          colors={["#00022000", "#000220"]}
+          style={styles.topGradient}
+          pointerEvents="none"
+        />
+      </ImageBackground>
+      {/* Второй контейнер: остальная высота, без фона, контент внутри */}
+      <View style={styles.bottomContainer}>
+        {/* man.png под контентом */}
+        <Image
+          source={require('../../assets/images/main/man.png')}
+          style={styles.man}
+          resizeMode="stretch"
+        />
+        {/* Вместо ScrollView и categoriesBlock: */}
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        
+          <TouchableOpacity
+            style={{ backgroundColor: 'blue', padding: 24, borderRadius: 12, zIndex: 100 }}
+            onPress={handleGoToCategory}
+          >
+            <Text style={{ color: '#fff', fontSize: 20, textAlign: 'center' }}>Перейти к категории</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-      <View style={styles.tabBar}>
-        <TouchableOpacity>
-          <Image source={require('../../assets/images/main/home.png')} style={styles.tabIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabCenter}>
-          <Image source={require('../../assets/images/main/calendar.png')} style={styles.tabIconCenter} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={require('../../assets/images/main/profile.png')} style={styles.tabIcon} />
-        </TouchableOpacity>
+        <View style={styles.customTabBar}>
+          <TouchableOpacity>
+            <Image source={require('../../assets/images/main/home.png')} style={styles.tabIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tabCenter}>
+            <Image source={require('../../assets/images/main/calendar.png')} style={styles.tabIconCenter} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={require('../../assets/images/main/notes.png')} style={styles.tabIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
     </ImageBackground>
   );
@@ -71,54 +139,82 @@ const Home = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover',
+    width: '100%',
+  },
+  topContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: height * 0.33,
+    width: '100%',
+    zIndex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomContainer: {
+    position: 'absolute',
+    top: height * 0.33,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    flex: 1,
+    zIndex: 3,
   },
   scrollContent: {
-    paddingTop: 40,
-    paddingBottom: 120,
     alignItems: 'center',
+    paddingBottom: 120,
   },
   header: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  mandala: {
-    width: width * 0.8,
-    height: width * 0.8,
-    resizeMode: 'contain',
     position: 'absolute',
-    top: -40,
-    left: width * 0.1,
-    opacity: 0.9,
+    left: 0,
+    right: 0,
+    top: '-5%',
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 0,
+    flex: 1,
+    zIndex: 10,
   },
   month: {
-    color: '#fff',
+    opacity: 0.8,
+    color: '#FAFAFA',
     fontSize: 32,
     fontFamily: 'Lora-Bold',
-    marginTop: 60,
     zIndex: 2,
   },
   day: {
-    color: '#fff',
-    fontSize: 90,
+    opacity: 0.8,
+    color: '#FAFAFA',
+    fontSize: 130,
     fontFamily: 'Lora-Bold',
     zIndex: 2,
-    marginVertical: -10,
+    marginVertical: -30,
   },
   weekday: {
-    color: '#fff',
+    opacity: 0.8,
+    color: '#FAFAFA',
     fontSize: 32,
     fontFamily: 'Lora-Bold',
     zIndex: 2,
   },
   categoriesBlock: {
-    marginTop: width * 0.1,
+    marginTop: 100,
     width: '90%',
   },
   categoryRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 28,
+    borderWidth: 2,
+    borderColor: '#fff',
+    borderRadius: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: 'rgba(0,0,0,0.15)',
+    zIndex: 99,
   },
   categoryIcon: {
     width: 56,
@@ -128,31 +224,35 @@ const styles = StyleSheet.create({
   },
   categoryLabel: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 26,
     fontFamily: 'Lora-Regular',
+    fontWeight: '400',
+    lineHeight: 31.2,
+    letterSpacing: 3,
     flexShrink: 1,
   },
-  tabBar: {
+  customTabBar: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
     height: 70,
-    backgroundColor: 'rgba(11,11,43,0.95)',
+    backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingHorizontal: 30,
     zIndex: 10,
+    borderWidth: 2,
+    borderColor: '#fff',
+    borderRadius: 20,
   },
   tabIcon: {
     width: 36,
     height: 36,
     resizeMode: 'contain',
-    tintColor: '#fff',
   },
   tabCenter: {
-    backgroundColor: '#7B2FF2',
     borderRadius: 32,
     padding: 10,
     marginHorizontal: 10,
@@ -161,7 +261,50 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     resizeMode: 'contain',
-    tintColor: '#fff',
+  },
+  man: {
+    opacity: 0.7,
+    position: 'absolute',
+    left: '-60%',
+    right: 0,
+    bottom: '-4%',
+    width: '143%',
+    height: '100%',
+    zIndex: 1,
+  },
+  blure: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 2,
+    alignSelf: 'center',
+  },
+  flower: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 3,
+    alignSelf: 'center',
+  },
+  topGradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '20%',
+    zIndex: 20
+  },
+  categoryRowActive: {
+    opacity: 0.6,
+    borderColor: '#D14684',
   },
 });
 

@@ -13,30 +13,20 @@ const MainNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#007AFF',
-        tabBarInactiveTintColor: '#999',
       }}
+      tabBar={() => null}
     >
       <Tab.Screen
         name="Home"
         component={HomeNavigator}
-        options={{
-          tabBarLabel: 'Главная',
-        }}
       />
       <Tab.Screen
         name="Categories"
         component={Categories}
-        options={{
-          tabBarLabel: 'Категории',
-        }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileNavigator}
-        options={{
-          tabBarLabel: 'Профиль',
-        }}
       />
     </Tab.Navigator>
   );
